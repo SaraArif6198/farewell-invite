@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Farewell · CS 2024</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:ital,wght@0,200;0,300;1,200&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --cream:   #f8f4ee;
+  --cream2:  #f2ebe0;
+  --sage:    #7a8c72;
+  --sage-l:  #c8d4c0;
+  --sage-ll: #e8efe5;
+  --rose:    #c4826a;
+  --rose-l:  #e8c4b4;
+  --ink:     #2a2418;
+  --mute:    #8a7d6a;
+  --border:  rgba(122,140,114,0.22);
+}
+
+html, body { width:100%; background:var(--cream); overflow-x:hidden; }
+
+/* ── SCENE ── */
+.scene {
+  min-height: 100svh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 2.5rem 1.4rem 4rem;
+  position: relative;
+}
+
+/* paper lines */
+.scene::after {
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+  background-image: repeating-linear-gradient(
+    0deg, transparent, transparent 31px,
+    rgba(122,140,114,0.055) 31px, rgba(122,140,114,0.055) 32px
+  );
+}
+
+/* ── FLOATING BOTANICALS (background) ── */
+.bg-flora {
+  position: fixed; inset:0; pointer-events:none; z-index:0;
+  overflow:hidden;
+}
+
+/* ── PULL LABEL ── */
+.pull-label {
+  font-family: 'DM Sans', sans-serif;
+  font-style: italic; font-weight: 200;
+  font-size: 0.82rem; color: var(--sage);
+  letter-spacing: 0.06em;
+  margin-bottom: 1.4rem;
+  position: relative; z-index: 3;
+  display: flex; align-items: center; gap: 10px;
+  animation: nudge 2.8s ease-in-out infinite;
+  transition: opacity 0.5s;
+}
+.pull-label::before, .pull-label::after {
+  content:''; width:22px; height:0.5px; background:var(--sage); opacity:.5;
+}
+.pull-label.gone { opacity:0; pointer-events:none; visibility:hidden; height:0; margin:0; }
+@keyframes nudge {
+  0%,100%{transform:translateY(0);opacity:.9}
+  50%{transform:translateY(-4px);opacity:.45}
+}
+
+/* ── ENVELOPE ── */
+.env-wrap {
+  position: relative; z-index: 3;
+  width: min(86vw, 320px);
+  cursor: pointer;
+  transition: opacity .55s ease, transform .65s cubic-bezier(.4,0,.2,1);
+  filter: drop-shadow(0 8px 28px rgba(60,50,30,.13));
+}
+.env-wrap.gone { opacity:0; transform:scale(.7) translateY(24px); pointer-events:none; }
+
+.env-outer {
+  width:100%; aspect-ratio:1.618;
+  position:relative; border-radius:3px;
+  overflow:hidden;
+}
+
+/* linen texture via repeating gradient */
+.env-outer::before {
+  content:''; position:absolute; inset:0; z-index:1;
+  background:
+    repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(255,255,255,.08) 3px, rgba(255,255,255,.08) 4px),
+    repeating-linear-gradient(0deg,  transparent, transparent 3px, rgba(0,0,0,.03) 3px, rgba(0,0,0,.03) 4px),
+    linear-gradient(145deg, #ede4d4, #e0d4be 50%, #d8cbac);
+}
+
+.env-left   { position:absolute;inset:0;z-index:2;background:#d4c9ad;clip-path:polygon(0 0,0 100%,54% 50%); }
+.env-right  { position:absolute;inset:0;z-index:2;background:#cfc4a8;clip-path:polygon(100% 0,100% 100%,46% 50%); }
+.env-bottom { position:absolute;inset:0;z-index:2;background:#ddd2b6;clip-path:polygon(0 100%,100% 100%,50% 42%); }
+
+.env-flap {
+  position:absolute;inset:0;z-index:4;
+  background:linear-gradient(175deg,#ede0c8,#dfd0b0);
+  clip-path:polygon(0 0,100% 0,50% 60%);
+  transform-origin:top center;
+  transition:transform .85s cubic-bezier(.4,0,.2,1);
+  filter:drop-shadow(0 2px 6px rgba(60,50,30,.12));
+}
+.env-flap::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(175deg,#f5ebd8,transparent 55%);
+  clip-path:polygon(0 0,100% 0,50% 60%);
+}
+.env-flap.open { transform:rotateX(-180deg); }
+
+/* wax seal */
+.seal {
+  position:absolute; top:46%; left:50%;
+  transform:translate(-50%,-50%);
+  z-index:6;
+  transition:opacity .3s, transform .4s cubic-bezier(.4,0,.2,1);
+}
+.seal.pop { opacity:0; transform:translate(-50%,-60%) scale(.04); }
+
+.seal-bg {
+  width:68px; height:68px; border-radius:50%;
+  background:conic-gradient(from 0deg, #7a8c72, #5e7055, #7a8c72, #6a7e62, #7a8c72);
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+  box-shadow: 0 3px 14px rgba(60,80,50,.28), inset 0 1px 3px rgba(255,255,255,.15);
+}
+.seal-bg::before {
+  content:''; position:absolute; inset:6px; border-radius:50%;
+  border:0.5px solid rgba(255,255,255,.18);
+}
+.seal-inner {
+  display:flex; flex-direction:column; align-items:center; gap:1px;
+  position:relative; z-index:2;
+}
+.seal-icon { font-size:18px; line-height:1; filter:brightness(0) invert(1); opacity:.85; }
+.seal-word {
+  font-family:'DM Sans',sans-serif; font-weight:200;
+  font-size:7px; letter-spacing:.18em; text-transform:uppercase;
+  color:rgba(255,255,255,.75);
+}
+
+/* envelope botanical corners */
+.env-sprig {
+  position:absolute; z-index:3; opacity:.35;
+  font-size:12px;
+}
+
+/* ── CARD ── */
+.card-wrap {
+  width:min(86vw,320px);
+  display:none; z-index:3; position:relative;
+}
+.card-wrap.show { display:block; }
+
+.card {
+  background:var(--cream);
+  border-radius:5px;
+  overflow:hidden;
+  box-shadow: 0 16px 52px rgba(60,50,30,.15), 0 2px 8px rgba(60,50,30,.08);
+  transform:translateY(28px) scale(.95);
+  opacity:0;
+  transition:transform 1s cubic-bezier(.34,1.1,.64,1), opacity .65s ease;
+}
+.card.reveal { transform:none; opacity:1; }
+
+/* top botanical band */
+.card-top {
+  background:var(--sage);
+  padding:1.1rem 1.6rem 1rem;
+  position:relative; overflow:hidden;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.card-top::before {
+  content:''; position:absolute; inset:0;
+  background:repeating-linear-gradient(
+    45deg,transparent,transparent 8px,rgba(255,255,255,.04) 8px,rgba(255,255,255,.04) 9px
+  );
+}
+.card-top-txt {
+  font-family:'DM Sans',sans-serif; font-weight:200;
+  font-size:.52rem; letter-spacing:.3em; text-transform:uppercase;
+  color:rgba(232,239,229,.75); position:relative; z-index:1;
+}
+.card-top-yr {
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:1.3rem; color:rgba(232,239,229,.85);
+  position:relative; z-index:1;
+}
+
+/* main body */
+.card-body {
+  padding:2rem 1.6rem 1.4rem;
+  position:relative;
+}
+
+/* botanical watermark */
+.wm {
+  position:absolute; top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  opacity:.04; pointer-events:none; z-index:0;
+}
+
+.dept-chip {
+  display:inline-flex; align-items:center; gap:7px;
+  background:var(--sage-ll);
+  border:0.5px solid var(--sage-l);
+  border-radius:40px;
+  padding:.32rem .9rem;
+  margin-bottom:1.5rem; position:relative; z-index:1;
+}
+.dept-chip span {
+  font-family:'DM Sans',sans-serif; font-weight:200;
+  font-size:.55rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--sage);
+}
+.dept-chip::before {
+  content:''; width:5px; height:5px; border-radius:50%;
+  background:var(--sage); flex-shrink:0;
+}
+
+.headline {
+  font-family:'Cormorant Garamond',serif; font-weight:300;
+  font-size:clamp(2.6rem,12vw,3.5rem);
+  line-height:.92; color:var(--ink);
+  margin-bottom:.5rem; position:relative; z-index:1;
+}
+.headline .italic { font-style:italic; color:var(--rose); display:block; }
+
+.tagline {
+  font-family:'DM Sans',sans-serif; font-style:italic; font-weight:200;
+  font-size:.82rem; color:var(--mute);
+  line-height:1.7; margin-bottom:1.6rem;
+  position:relative; z-index:1;
+}
+
+/* zig-zag divider */
+.zz {
+  display:flex; align-items:center; gap:4px;
+  margin:1.1rem 0; position:relative; z-index:1;
+}
+.zz-line { flex:1; height:.5px; background:linear-gradient(90deg,transparent,var(--sage-l),transparent); }
+.zz-leaf {
+  font-size:11px; color:var(--sage); opacity:.6;
+  transform:rotate(-20deg);
+}
+
+/* detail rows */
+.details { position:relative; z-index:1; }
+.drow {
+  display:flex; align-items:center; gap:.9rem;
+  padding:.7rem 0;
+  border-bottom:.5px solid rgba(122,140,114,.12);
+}
+.drow:last-child { border-bottom:none; }
+.drow-ic {
+  width:32px; height:32px; border-radius:8px;
+  background:var(--sage-ll);
+  display:flex; align-items:center; justify-content:center;
+  flex-shrink:0;
+}
+.drow-ic svg { width:13px; height:13px; }
+.drow-k {
+  font-family:'DM Sans',sans-serif; font-weight:200;
+  font-size:.5rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--sage); margin-bottom:2px;
+}
+.drow-v {
+  font-family:'Cormorant Garamond',serif; font-size:.98rem; color:var(--ink);
+}
+
+/* countdown */
+.cd-wrap { position:relative; z-index:1; margin:1.1rem 0; }
+.cd-top {
+  display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:.6rem;
+}
+.cd-title {
+  font-family:'DM Sans',sans-serif; font-weight:200;
+  font-size:.5rem; letter-spacing:.22em; text-transform:uppercase;
+  color:var(--mute);
+}
+.cd-date {
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:.82rem; color:var(--rose);
+}
+.cd-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+.cd-box {
+  background:#fff; border:.5px solid var(--border);
+  border-radius:9px; padding:.65rem .2rem .55rem;
+  text-align:center;
+}
+.cd-n {
+  font-family:'Cormorant Garamond',serif; font-weight:300;
+  font-size:1.6rem; color:var(--ink); line-height:1; display:block;
+}
+.cd-u {
+  font-family:'DM Sans',sans-serif; font-weight:200;
+  font-size:.42rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--sage); margin-top:2px; display:block; opacity:.8;
+}
+
+/* rsvp */
+.rsvp-line {
+  text-align:center;
+  font-family:'DM Sans',sans-serif; font-style:italic; font-weight:200;
+  font-size:.75rem; color:var(--mute); line-height:1.7;
+  margin:1rem 0 1.2rem; position:relative; z-index:1;
+}
+
+/* buttons */
+.btns { display:grid; grid-template-columns:1fr 1fr; gap:8px; position:relative; z-index:1; }
+.btn {
+  padding:.82rem .4rem; border:none; border-radius:10px;
+  font-family:'DM Sans',sans-serif; font-weight:300;
+  font-size:.58rem; letter-spacing:.1em; text-transform:uppercase;
+  cursor:pointer; display:flex; align-items:center;
+  justify-content:center; gap:5px;
+  transition:transform .15s, opacity .15s;
+}
+.btn:active { transform:scale(.97); opacity:.85; }
+.btn svg { width:12px; height:12px; flex-shrink:0; }
+.btn-cal   { background:var(--sage); color:#fff; }
+.btn-share { background:var(--rose-l); color:var(--ink); }
+
+/* footer */
+.card-foot {
+  background:var(--cream2);
+  border-top:.5px solid var(--border);
+  padding:.9rem 1.6rem;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.foot-l {
+  font-family:'DM Sans',sans-serif; font-weight:200;
+  font-size:.52rem; letter-spacing:.18em; text-transform:uppercase;
+  color:var(--mute);
+}
+/* hand-drawn underline effect */
+.foot-r {
+  font-family:'Cormorant Garamond',serif; font-style:italic;
+  font-size:1rem; color:var(--rose);
+  border-bottom:1px solid currentColor;
+  padding-bottom:1px;
+}
+
+/* ── TOAST ── */
+.toast {
+  position:fixed; bottom:1.8rem; left:50%;
+  transform:translateX(-50%) translateY(60px);
+  background:var(--sage); color:#fff;
+  padding:.6rem 1.3rem; border-radius:40px;
+  font-family:'DM Sans',sans-serif; font-weight:200;
+  font-size:.62rem; letter-spacing:.06em;
+  white-space:nowrap;
+  transition:transform .4s cubic-bezier(.34,1.4,.64,1);
+  z-index:999;
+}
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+/* ── PETALS ── */
+.petal { position:fixed; pointer-events:none; z-index:9999; }
+</style>
+</head>
+<body>
+
+<!-- background sprigs -->
+<div class="bg-flora">
+  <svg width="100%" height="100%" viewBox="0 0 400 800" preserveAspectRatio="xMidYMid slice" style="opacity:.055">
+    <!-- sprig top-left -->
+    <g transform="translate(18,40) rotate(-25)" stroke="#7a8c72" fill="none" stroke-width="1">
+      <path d="M0 80 Q4 40 8 0"/>
+      <path d="M2 60 Q-10 52 -18 44"/><path d="M4 44 Q-8 36 -14 26"/><path d="M5 28 Q14 20 20 12"/>
+      <ellipse cx="-13" cy="44" rx="8" ry="5" transform="rotate(-30,-13,44)" fill="#7a8c72" opacity=".5"/>
+      <ellipse cx="-10" cy="27" rx="7" ry="4.5" transform="rotate(-40,-10,27)" fill="#7a8c72" opacity=".4"/>
+      <ellipse cx="16" cy="12" rx="7" ry="4" transform="rotate(20,16,12)" fill="#7a8c72" opacity=".45"/>
+    </g>
+    <!-- sprig top-right -->
+    <g transform="translate(375,80) rotate(35)" stroke="#7a8c72" fill="none" stroke-width="1">
+      <path d="M0 70 Q-3 35 -6 0"/>
+      <path d="M-2 52 Q10 44 17 36"/><path d="M-3 36 Q9 28 14 18"/>
+      <ellipse cx="12" cy="36" rx="8" ry="5" transform="rotate(30,12,36)" fill="#7a8c72" opacity=".5"/>
+      <ellipse cx="10" cy="18" rx="7" ry="4" transform="rotate(40,10,18)" fill="#7a8c72" opacity=".4"/>
+    </g>
+    <!-- flower bottom-left -->
+    <g transform="translate(24,700) rotate(15)">
+      <circle cx="0" cy="0" r="4" fill="#c4826a" opacity=".5"/>
+      <ellipse cx="0" cy="-12" rx="4" ry="7" fill="#c4826a" opacity=".4"/>
+      <ellipse cx="0" cy="-12" rx="4" ry="7" transform="rotate(60,0,0)" fill="#c4826a" opacity=".35"/>
+      <ellipse cx="0" cy="-12" rx="4" ry="7" transform="rotate(120,0,0)" fill="#c4826a" opacity=".38"/>
+      <ellipse cx="0" cy="-12" rx="4" ry="7" transform="rotate(180,0,0)" fill="#c4826a" opacity=".4"/>
+      <ellipse cx="0" cy="-12" rx="4" ry="7" transform="rotate(240,0,0)" fill="#c4826a" opacity=".35"/>
+      <ellipse cx="0" cy="-12" rx="4" ry="7" transform="rotate(300,0,0)" fill="#c4826a" opacity=".38"/>
+    </g>
+    <!-- dots scattered -->
+    <circle cx="360" cy="720" r="3" fill="#7a8c72" opacity=".2"/>
+    <circle cx="350" cy="735" r="2" fill="#c4826a" opacity=".18"/>
+    <circle cx="370" cy="742" r="1.5" fill="#7a8c72" opacity=".15"/>
+  </svg>
+</div>
+
+<div class="scene" id="scene">
+
+  <!-- PROMPT -->
+  <div class="pull-label" id="prompt">tap the seal to open</div>
+
+  <!-- ENVELOPE -->
+  <div class="env-wrap" id="envWrap" onclick="openIt()">
+    <div class="env-outer">
+      <div class="env-left"></div>
+      <div class="env-right"></div>
+      <div class="env-bottom"></div>
+
+      <!-- pressed botanical on envelope face -->
+      <svg style="position:absolute;inset:0;z-index:3;opacity:.18;pointer-events:none" viewBox="0 0 320 198" fill="none">
+        <g transform="translate(28,20) rotate(-15)" stroke="#7a8c72" stroke-width="1">
+          <path d="M0 55 Q3 28 6 0"/>
+          <path d="M1 40 Q-9 33-15 26"/><ellipse cx="-11" cy="26" rx="7" ry="4" transform="rotate(-30,-11,26)" fill="#7a8c72"/>
+          <path d="M3 25 Q11 18 16 10"/><ellipse cx="13" cy="10" rx="6" ry="3.5" transform="rotate(20,13,10)" fill="#7a8c72"/>
+        </g>
+        <g transform="translate(280,165) rotate(160)" stroke="#7a8c72" stroke-width="1">
+          <path d="M0 48 Q3 24 6 0"/>
+          <path d="M2 34 Q-8 27-13 20"/><ellipse cx="-10" cy="20" rx="6" ry="4" transform="rotate(-30,-10,20)" fill="#7a8c72"/>
+        </g>
+        <g transform="translate(258,18)">
+          <circle cx="0" cy="0" r="3" fill="#c4826a"/>
+          <ellipse cx="0" cy="-9" rx="3" ry="5.5" fill="#c4826a" opacity=".7"/>
+          <ellipse cx="0" cy="-9" rx="3" ry="5.5" transform="rotate(72,0,0)" fill="#c4826a" opacity=".65"/>
+          <ellipse cx="0" cy="-9" rx="3" ry="5.5" transform="rotate(144,0,0)" fill="#c4826a" opacity=".65"/>
+          <ellipse cx="0" cy="-9" rx="3" ry="5.5" transform="rotate(216,0,0)" fill="#c4826a" opacity=".65"/>
+          <ellipse cx="0" cy="-9" rx="3" ry="5.5" transform="rotate(288,0,0)" fill="#c4826a" opacity=".7"/>
+        </g>
+      </svg>
+
+      <div class="env-flap" id="flap"></div>
+
+      <!-- WAX SEAL -->
+      <div class="seal" id="seal">
+        <div class="seal-bg">
+          <div class="seal-inner">
+            <span class="seal-icon">✾</span>
+            <span class="seal-word">Farewell</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD -->
+  <div class="card-wrap" id="cardWrap">
+    <div class="card" id="card">
+
+      <div class="card-top">
+        <span class="card-top-txt">CS Dept · 6th Semester</span>
+        <span class="card-top-yr">2023</span>
+        <!-- botanical in top band -->
+        <svg style="position:absolute;right:55px;top:50%;transform:translateY(-50%);opacity:.18" width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="14" r="3" fill="#fff"/>
+          <ellipse cx="14" cy="6" rx="3" ry="5" fill="#fff"/>
+          <ellipse cx="14" cy="6" rx="3" ry="5" transform="rotate(60,14,14)" fill="#fff"/>
+          <ellipse cx="14" cy="6" rx="3" ry="5" transform="rotate(120,14,14)" fill="#fff"/>
+          <ellipse cx="14" cy="6" rx="3" ry="5" transform="rotate(180,14,14)" fill="#fff"/>
+          <ellipse cx="14" cy="6" rx="3" ry="5" transform="rotate(240,14,14)" fill="#fff"/>
+          <ellipse cx="14" cy="6" rx="3" ry="5" transform="rotate(300,14,14)" fill="#fff"/>
+        </svg>
+      </div>
+
+      <div class="card-body">
+
+        <!-- watermark -->
+        <div class="wm">
+          <svg width="160" height="160" viewBox="0 0 100 100" fill="none">
+            <g stroke="#7a8c72" stroke-width=".8">
+              <path d="M50 90 Q52 60 55 30"/><path d="M55 30 Q58 10 60 0"/>
+              <path d="M52 68 Q38 58 28 52"/><ellipse cx="29" cy="52" rx="12" ry="7" transform="rotate(-20,29,52)" fill="#7a8c72"/>
+              <path d="M53 50 Q40 42 32 35"/><ellipse cx="33" cy="35" rx="10" ry="6" transform="rotate(-25,33,35)" fill="#7a8c72"/>
+              <path d="M54 34 Q63 26 70 18"/><ellipse cx="69" cy="18" rx="10" ry="6" transform="rotate(15,69,18)" fill="#7a8c72"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="dept-chip"><span>Computer Science Department</span></div>
+
+        <h1 class="headline">
+          Until<br>we meet<br><span class="italic">again.</span>
+        </h1>
+
+        <p class="tagline">
+          An evening to honour the graduating<br>8th Semester batch &amp; our beloved faculty
+        </p>
+
+        <div class="zz">
+          <div class="zz-line"></div>
+          <span class="zz-leaf">✾</span>
+          <div class="zz-line"></div>
+        </div>
+
+        <div class="details">
+          <div class="drow">
+            <div class="drow-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#7a8c72" stroke-width="1.6" stroke-linecap="round">
+                <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+              </svg>
+            </div>
+            <div><div class="drow-k">Date</div><div class="drow-v">Wednesday, 20 May 2026</div></div>
+          </div>
+          <div class="drow">
+            <div class="drow-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#7a8c72" stroke-width="1.6" stroke-linecap="round">
+                <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>
+              </svg>
+            </div>
+            <div><div class="drow-k">Time</div><div class="drow-v">5:30 PM onwards</div></div>
+          </div>
+          <div class="drow">
+            <div class="drow-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#7a8c72" stroke-width="1.6" stroke-linecap="round">
+                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+                <circle cx="12" cy="9" r="2.5"/>
+              </svg>
+            </div>
+            <div><div class="drow-k">Venue</div><div class="drow-v">Main Auditorium, Campus</div></div>
+          </div>
+          <div class="drow">
+            <div class="drow-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#7a8c72" stroke-width="1.6" stroke-linecap="round">
+                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>
+              </svg>
+            </div>
+            <div><div class="drow-k">Dress</div><div class="drow-v">Smart Formal</div></div>
+          </div>
+        </div>
+
+        <div class="zz">
+          <div class="zz-line"></div>
+          <span class="zz-leaf">✾</span>
+          <div class="zz-line"></div>
+        </div>
+
+        <div class="cd-wrap">
+          <div class="cd-top">
+            <span class="cd-title">Counting down to</span>
+            <span class="cd-date">20 May 2026</span>
+          </div>
+          <div class="cd-grid">
+            <div class="cd-box"><span class="cd-n" id="d">--</span><span class="cd-u">Days</span></div>
+            <div class="cd-box"><span class="cd-n" id="h">--</span><span class="cd-u">Hrs</span></div>
+            <div class="cd-box"><span class="cd-n" id="m">--</span><span class="cd-u">Min</span></div>
+            <div class="cd-box"><span class="cd-n" id="s">--</span><span class="cd-u">Sec</span></div>
+          </div>
+        </div>
+
+        <p class="rsvp-line">Kindly RSVP by 15 May<br>Class Rep · +92 334 2046959</p>
+
+        <div class="btns">
+          <button class="btn btn-cal" onclick="addCal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18M12 14v4m-2-2h4"/>
+            </svg>
+            Add to Calendar
+          </button>
+          <button class="btn btn-share" onclick="shareIt()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+              <path d="M8.59 13.51l6.83 3.98M15.41 6.51l-6.82 3.98"/>
+            </svg>
+            Share
+          </button>
+        </div>
+
+      </div>
+
+      <div class="card-foot">
+        <span class="foot-l">With warmth from 6th Sem</span>
+        <span class="foot-r">Batch 2022–26</span>
+      </div>
+      <!-- designed with care -->
+      <div style="text-align:center; padding:.45rem 0 .55rem; background:var(--cream2); border-top:.5px solid rgba(122,140,114,0.1);">
+        <span style="font-family:'DM Sans',sans-serif; font-weight:200; font-size:.48rem; letter-spacing:.28em; text-transform:uppercase; color:var(--sage); opacity:.55;">
+          ✾ &nbsp; crafted by Sara Arif &nbsp; ✾
+        </span>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── countdown to May 20 2026 ── */
+const EVT = new Date('2026-05-20T17:30:00');
+let cdTimer = null;
+
+function tick() {
+  const dEl = document.getElementById('d');
+  if (!dEl) return; /* card not yet visible, skip */
+
+  let diff = EVT - new Date();
+  if (diff <= 0) {
+    ['d','h','m','s'].forEach(i => {
+      const el = document.getElementById(i);
+      if (el) el.textContent = '00';
+    });
+    clearInterval(cdTimer);
+    return;
+  }
+  dEl.textContent = Math.floor(diff / 864e5);
+  diff %= 864e5;
+  document.getElementById('h').textContent = String(Math.floor(diff / 36e5)).padStart(2,'0');
+  diff %= 36e5;
+  document.getElementById('m').textContent = String(Math.floor(diff / 6e4)).padStart(2,'0');
+  document.getElementById('s').textContent = String(Math.floor((diff % 6e4) / 1e3)).padStart(2,'0');
+}
+
+function startCountdown() {
+  tick();
+  cdTimer = setInterval(tick, 1000);
+}
+
+/* ── petal burst ── */
+function burst() {
+  const colors = ['#7a8c72','#c4826a','#c8d4c0','#e8c4b4','#f8f4ee','#5e7055','#d4a890'];
+  const shapes = ['50%','50% 0 50% 0','2px','40% 60% 60% 40%'];
+  const cx = window.innerWidth / 2;
+  const cy = window.innerHeight * 0.36;
+  for (let i = 0; i < 62; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'petal';
+      const sz = Math.random() * 10 + 4;
+      el.style.cssText = `
+        width:${sz}px; height:${sz * (Math.random()*.8+.8)}px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        left:${cx}px; top:${cy}px;
+        border-radius:${shapes[Math.floor(Math.random()*shapes.length)]};
+        transform:rotate(${Math.random()*360}deg);
+      `;
+      document.body.appendChild(el);
+      const angle = Math.random() * Math.PI * 2;
+      const spd = Math.random() * 220 + 70;
+      const vx = Math.cos(angle) * spd;
+      const vy = Math.sin(angle) * spd - 140;
+      const dur = Math.random() * 1200 + 700;
+      let t0 = null;
+      (function frame(ts) {
+        if (!t0) t0 = ts;
+        const p = (ts - t0) / dur;
+        if (p >= 1) { el.remove(); return; }
+        el.style.left = (cx + vx * p) + 'px';
+        el.style.top  = (cy + vy * p + 360 * p * p) + 'px';
+        el.style.opacity = 1 - p;
+        el.style.transform = `rotate(${360 * p}deg)`;
+        requestAnimationFrame(frame);
+      })(performance.now());
+    }, i * 20);
+  }
+}
+
+/* ── envelope open ── */
+let opened = false;
+function openIt() {
+  if (opened) return;
+  opened = true;
+  document.getElementById('prompt').classList.add('gone');
+  document.getElementById('seal').classList.add('pop');
+
+  // slight bounce on tap
+  const ew = document.getElementById('envWrap');
+  ew.style.transform = 'scale(1.03)';
+  setTimeout(() => ew.style.transform = '', 200);
+
+  setTimeout(() => {
+    document.getElementById('flap').classList.add('open');
+    setTimeout(() => {
+      ew.classList.add('gone');
+      setTimeout(() => {
+        ew.style.display = 'none';
+        const cw = document.getElementById('cardWrap');
+        cw.classList.add('show');
+        burst();
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          document.getElementById('card').classList.add('reveal');
+          startCountdown(); /* start only after elements are in DOM */
+        }));
+      }, 540);
+    }, 800);
+  }, 220);
+}
+
+/* ── toast ── */
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+/* ── calendar ── */
+function addCal() {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  const ical = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nDTSTART:20260520T173000\nDTEND:20260520T213000\nSUMMARY:CS Farewell – 8th Semester\nLOCATION:Main Auditorium, University Campus\nEND:VEVENT\nEND:VCALENDAR`;
+  if (isIOS) {
+    window.open(URL.createObjectURL(new Blob([ical], {type:'text/calendar'})));
+  } else {
+    window.open('https://calendar.google.com/calendar/render?action=TEMPLATE&text=CS+Farewell+Batch+2024&dates=20260520T173000/20260520T213000&location=Main+Auditorium');
+  }
+  toast('Opening calendar…');
+}
+
+/* ── share ── */
+async function shareIt() {
+  const text = `You're invited ✾\n\nCS Department Farewell Evening\nTuesday, 20 May 2026 · 5:30 PM\nMain Auditorium, University Campus\nDress: Smart Formal\n\nRSVP by 15 May · +92 334 2046959`;
+  if (navigator.share) {
+    try { await navigator.share({ title: 'CS Farewell 2026', text }); }
+    catch(e) { if (e.name !== 'AbortError') fallback(text); }
+  } else { fallback(text); }
+}
+function fallback(text) {
+  navigator.clipboard.writeText(text)
+    .then(() => toast('Copied to clipboard ✓'))
+    .catch(() => toast('Copy the link manually'));
+}
+</script>
+</body>
+</html>
